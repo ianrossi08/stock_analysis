@@ -23,11 +23,12 @@ app.layout = html.Div([
         dcc.Input(
             id='input-stock',
             placeholder='Ex: APPL',
-            type='text'),
-        html.Button(id='submit-button', children='Submit')
+            type='text',
+            value='APPL'),
+        html.Button(id='submit-button', n_clicks=0, children='Submit')
     ], style={'width': '48%', 'textAlign': 'left', 'justifyContent':'center'}
     ),
-    
+    html.Hr(),
     dcc.Graph(id='graphic')
     
 ])
@@ -39,8 +40,8 @@ app.layout = html.Div([
 )
 def update_graph(n_clicks, stock):
 
-    ticker = yf.Ticker(stock)
-    df = ticker.history(period='10y')
+    ticker = yf.Ticker(str(stock.upper()))
+    df = ticker.history(period='max')
     df = df.reset_index()
     
     fig = go.Figure(data=[go.Candlestick(x=df['Date'],
