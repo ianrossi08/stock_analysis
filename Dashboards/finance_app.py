@@ -48,6 +48,8 @@ def update_graph(n_clicks, stock):
     
     df_dividends = ticker.dividends.to_frame().reset_index()
     df_dividends['Date'] = df_dividends['Date'].dt.date
+    df_dividends['Date'] = pd.to_datetime(df_dividends['Date'])
+    df_dividends['year'] = df_dividends['Date'].dt.year
     
     fig_candlestick = go.Figure(data=[go.Candlestick(x=df['Date'],
                 open=df['Open'],
@@ -57,7 +59,7 @@ def update_graph(n_clicks, stock):
             
     fig_candlestick.update_layout(transition_duration=500, xaxis_rangeslider_visible=False)
     
-    fig_dividends = px.bar(df_dividends, x='Date', y='Dividends')
+    fig_dividends = px.bar(df_dividends, x='year', y='Dividends')
     
     return fig_candlestick, fig_dividends
 
